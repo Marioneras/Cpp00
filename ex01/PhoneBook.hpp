@@ -23,12 +23,16 @@ enum Field = {
 class Contact {
 	private :
 		std::string	field[5];
+		std::bool	isSet = false;
 	public :
+		void	setField(std::string &field, bool (*validateField)(const std::string&),
+			const std::string &prompt, const std::string &errorMessage);
+		string	getField(int index);
 }
 
 class PhoneBook {
 	private :
-		Contact ListOfContact[8];
+		Contact listOfContact[8];
 		int	isFieldEmpty();
 		int	findEmptyField(Contact listOfContact[]);
 	public :

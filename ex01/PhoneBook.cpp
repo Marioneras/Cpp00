@@ -15,19 +15,9 @@
 #include <iostream>
 #include <string>
 
-void	setField(std::string &field, bool (*validateField)(const std::string&),
-		const std::string &prompt, const std::string &errorMessage) {
-	std::cout << "Enter your "<< prompt << ": ";
-	getline(std::cin, field);
-	if (std::cin.gcount() == 0)
-		throw std::exception(errorMessage);
-	if (validateField)
-		validateField(field);
-}
-
 void	PhoneBook::add() {
-	int		indexEmptyContact = findEmptyField(ListOfContact);
-	Contact	&contact = ListOfContact[indexEmptyContact];
+	int		indexEmptyContact = findEmptyField(listOfContact);
+	Contact	&contact = listOfContact[indexEmptyContact];
 	std::string	prompts[5] = {
 		"first name",
 		"last name",
@@ -45,11 +35,27 @@ void	PhoneBook::add() {
 	};
 
 	for (int i = 0; i < 5; i++)
-		setField(contact.field[i], (i == 3) * isNumber, prompts[i],errorMessage[i]);
+		setField(contact.field[i], (i == 3) * isNumber, prompts[i], errorMessage[i]);
+	contact.isSet = true;
+}
+
+void	PhoneBook::search() {
+	string	userInput;
+
+	for (int i = 0, listOfContact[i].isSet; i++)
+		displayContact(listOfContact[i]);
+	std::cout << "Select the contact you want the infos to be displayed:" << endl;
+	std::getline(std::cin, userInput);
+	if (std::cin.eof() == 1) {
+		std::cin.clear();
+		std::cin.ignore();
+		continue;
+	}
+
 }
 
 int	main() {
-	string		user_input;
+	string		userInput;
 	PhoneBook	phonebook;
 
 	std::cout << "Welcome to your AMAZING PhoneBook !" << endl;
@@ -58,17 +64,17 @@ int	main() {
 	std::cout << " or simply exit the program by entering EXIT" << endl;
 
 	while (42) {
-		std::getline(std::cin, user_input);
+		std::getline(std::cin, userInput);
 		if (std::cin.eof() == 1) {
 			std::cin.clear();
 			std::cin.ignore();
 			continue;
 		}
-		if (std::strncmp(user_input, "ADD", 4) == 0)
+		if (std::strncmp(userInput, "ADD", 4) == 0)
 			phonebook.add();
-		else if (std::strncmp(user_input, "SEARCH", 7) == 0)
+		else if (std::strncmp(userInput, "SEARCH", 7) == 0)
 			phonebook.search();
-		else if (std::strncmp(user_input, "EXIT", 5) == 0)
+		else if (std::strncmp(userInput, "EXIT", 5) == 0)
 			phonebook.exit();
 		else {
 			std::cout << "This command doesn't exist,";
