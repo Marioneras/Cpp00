@@ -13,22 +13,28 @@
 # ifndef PHONEBOOK_HPP
 # define PHONEBOOK_HPP
 
-enum Field = {
-	firstName,
-	lastName,
-	phoneNumber,
-	darkestSecret
-}
+#include <string>
+
 
 class Contact {
 	private :
 		std::string	field[5];
-		std::bool	isSet = false;
+		enum Field {
+			firstName,
+			lastName,
+			phoneNumber,
+			darkestSecret
+		};
+		bool	isSet;
 	public :
 		void	setField(std::string &field, bool (*validateField)(const std::string&),
-			const std::string &prompt, const std::string &errorMessage);
-		string	getField(int index);
-}
+				const std::string &prompt, const std::string &errorMessage);
+		const	std::string	getField(int index);
+		void	printFixedWidthField(const std::string &text,
+				std::size_t width = 10);
+		void	displayContact(contact &listOfContact);
+		void	displayContactInfos(contact &listOfContact);
+};
 
 class PhoneBook {
 	private :
@@ -39,4 +45,6 @@ class PhoneBook {
 		void add();
 		void search();
 		int exit();
-}
+};
+
+# endif
