@@ -10,22 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iostream>
+
 #include "PhoneBook.hpp"
 
-#include <iostream>
-#include <cstring>
-
 void	PhoneBook::add() {
-	int		indexEmptyContact = findEmptyField(listOfContact);
+	int		indexEmptyContact = findEmptyField();
 	Contact	&contact = listOfContact[indexEmptyContact];
-	std::string	prompts[5] = {
+	std::string	prompts[] = {
 		"first name",
 		"last name",
 		"nickname",
 		"phone number (digits only, if you please—machines are literal creatures)",
 		"darkest secret (stored discreetly, though never truly forgotten)"
 	};
-	std::string errorMessage[5] = {
+	std::string errorMessage[] = {
 		"Kindly furnish a name, if you please.",
 		"Name must be furnished, I say!",
 		"You must provide a moniker, pray tell",
@@ -35,27 +34,27 @@ void	PhoneBook::add() {
 	};
 
 	for (int i = 0; i < 5; i++)
-		setField(contact.field[i], (i == 3) * isNumber, prompts[i], errorMessage[i]);
+		contact.setField((Contact::Field)i, (i == 3) ? &isNumber : 0, prompts[i], errorMessage[i]);
 	contact.isSet = true;
 }
 
 void	PhoneBook::search() {
 	std::string	userInput;
 
-	std::cout << "---------------------------------------------";
-	std::cout << "|  Index   |First name|Last  name| Nickname |";
+	std::cout << "/----------.----------.----------.----------\\" << std::endl;
+	std::cout << "|  Index   |First name|Last  name| Nickname |" << std::endl;
+	std::cout << "}----------+----------+----------+----------{" << std::endl;
 
-	for (int i = 0, listOfContact[i].isSet; i++)
-		displayContact(listOfContact[i]);
+	for (int i = 0; listOfContact[i].isSet; i++) {
+		listOfContact[i].displayContact(i);
+	}
 
-	std::cout << "---------------------------------------------";
+	std::cout << "\\----------'----------'----------'----------/" << std::endl;
 
 	std::cout << "Pray, select the contact whose particulars you desire to view:" << std::endl;
 	std::getline(std::cin, userInput);
 	if (std::cin.eof() == 1) {
 		std::cin.clear();
-		std::cin.ignore();
-		continue;
 	}
 	int res = std::stoi(userInput);
 	if (res > i || res < 0)
@@ -75,7 +74,7 @@ int	main() {
 	std::cout << "Good day to you, inquisitive caller." << std::endl;
 	std::cout << "You have opened the Amazing Phonebook,";
 	std::cout << "Edition Perpetual—once a humble book of paper and ink,";
-	std::cout << "now enlivened by currents unseen." << endl;
+	std::cout << "now enlivened by currents unseen." << std::endl;
 	std::cout << "I stand ready to serve, faithfully and without gossip." << std::endl;
 	std::cout << "Should you wish to inscribe a new name upon my ever-growing pages, enter ADD." << std::endl;
 	std::cout << "If you seek a particular party already recorded, enter SEARCH." << std::endl;
@@ -83,21 +82,29 @@ int	main() {
 	std::cout << "Pray tell, how may I be of assistance?" << std::endl;
 
 	while (42) {
-		std::getline(std::cin, userInput);
-		if (std::cin.eof() == 1) {
-			std::cin.clear();
-			std::cin.ignore();
-			/* continue; */
+		if (std::getline(std::cin, userInput)) {
+			if (userInput.compare("ADD") == 0)
+				phonebook.add();
+			else if (userInput.compare("SEARCH") == 0)
+				phonebook.search();
+			else if (userInput.compare("EXIT") == 0) {
+				phonebook.exit();
+				break;
+			}
+			else {
+				std::cout << "This command doesn't exist: ";
+				std::cout << "please, try typping ADD, SEARCH or EXIT." << std::endl;
+			}
 		}
-		if (userInput.compare("ADD") == 0)
-			phonebook.add();
-		else if (userInput.compare("SEARCH") == 0)
-			phonebook.search();
-		else if (userInput.compare("EXIT") == 0)
-			phonebook.exit();
 		else {
-			std::cout << "This command doesn't exist: ";
-			std::cout << "please, try typping ADD, SEARCH or EXIT." << std::endl;
+			if (std::cin.eof()) {
+				std::cin.clear();
+				continue;
+			}
+			else {
+				std::cerr << "Input error!" << std::endl;
+				break;
+			}
 		}
 	}
 	return (0);

@@ -10,12 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-std::bool	isNumber(const std::string &s) {
-	return (std::ranges::all_of(s.begin(), s.end(),
-		[](char c) { return isdigit(c) != 0; }));
+#include <iostream>
+#include <sstream>
+
+#include "PhoneBook.hpp"
+
+bool isNumber(const std::string& str) {
+	if (str.empty())
+        return false;
+
+    for (std::string::size_type i = 0; i < str.size(); ++i)
+    {
+        if (!std::isdigit(static_cast<unsigned char>(str[i])))
+            return false;
+    }
+    return true;
 }
 
-int	findEmptyField(contact *contact)
+int	PhoneBook::findEmptyField()
 {
 	static int i = -1;
 
@@ -26,46 +38,69 @@ int	findEmptyField(contact *contact)
 	return (i);
 }
 
-void	setField(std::string &field, bool (*validateField)(const std::string&),
+void	Contact::setField(Field index, bool (*validateField)(const std::string&),
 		const std::string &prompt, const std::string &errorMessage) {
 	std::cout << "Inscribe thy given "<< prompt << ": ";
-	string	userInput;
+	std::string	userInput;
 	getline(std::cin, userInput);
-	if (std::cin.gcount() == 0)
-		throw std::exception(errorMessage);
+	if (std::cin.eof() == 1) {
+		std::cin.clear();
+		std::cin.ignore();
+		/* continue; */
+	}
+	if (userInput.size() == 0) {
+		std::cout << errorMessage << std::endl;
+		return ;
+	}
 	if (validateField) {
 		if (validateField(userInput))
-			field = userInput;
-		else
-			throw std::exception(errorMessage);
+			field[index] = userInput;
+		else {
+			std::cout << errorMessage << std::endl;
+			return ;
+		}
 	}
 	else
-		field = userInput;
+		field[index] = userInput;
 }
 
-const std::string	getField(int index) {
+const std::string	&Contact::getField(int index) {
 	if (index > 4)
-		throw std::exception("out of range");
-	return ((const)field[index]);
+		throw std::out_of_range("Index out of range");
+	return (field[index]);
 }
 
-void	printFixedWidthField(const std::string &text, std::size_t width) {
-	for (int i = 0, i < 9; i++)
-		std::cout << text[i];
-	if (text[i + 1])
-		std::cout << ".";
-	else
-		std::cout << text[i];
+void	Contact::printFixedWidthField(const std::string &text, std::size_t width) {
+	int	isBigger = text.size() > width;
+
+	std::string	sub = text.substr(0, width - isBigger);
+	std::cout.fill(' ');
+	std::cout.width(width - isBigger);
+	std::cout << std::left << sub;
+	std::cout << (char)(isBigger * '.');
 }
 
-void	displayContact(contact &listOfContact) {
+void	Contact::displayContact(int i) {
 	std::string contactField[5];
 
-	for (int i = 0, i < 5; i++)
-		contactField[i] = listOfContact.getField(i);
+	std::string	index;
+	std::stringstream str;
+	str << i;
+	str >> index;
 
+	for (int i = 0; i < 5; i++)
+		contactField[i] = getField(i);
+
+	std::cout << '|';
+	printFixedWidthField(index + 1);
+	std::cout << '|';
+	for (int i = 0; i < 3; i++) {
+		printFixedWidthField(contactField[i]);
+		std::cout << '|';
+	}
+	std::cout << std::endl;
 }
 
-void	displayContactInfos(contact &listOfContact) {
-
-}
+// void	Contact::displayContactInfos(contact &listOfContact) {
+//
+// }

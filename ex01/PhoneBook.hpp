@@ -14,37 +14,41 @@
 # define PHONEBOOK_HPP
 
 #include <string>
+#include <cstring>
 
 
 class Contact {
 	private :
 		std::string	field[5];
+	public :
 		enum Field {
 			firstName,
 			lastName,
+			nickname,
 			phoneNumber,
 			darkestSecret
 		};
 		bool	isSet;
-	public :
-		void	setField(std::string &field, bool (*validateField)(const std::string&),
+		void	setField(Field index, bool (*validateField)(const std::string&),
 				const std::string &prompt, const std::string &errorMessage);
-		const	std::string	getField(int index);
+		const	std::string	&getField(int index);
 		void	printFixedWidthField(const std::string &text,
 				std::size_t width = 10);
-		void	displayContact(contact &listOfContact);
-		void	displayContactInfos(contact &listOfContact);
+		void	displayContact(int i);
+		void	displayContactInfos(Contact &listOfContact);
 };
 
 class PhoneBook {
 	private :
 		Contact listOfContact[8];
 		int	isFieldEmpty();
-		int	findEmptyField(Contact listOfContact[]);
+		int	findEmptyField();
 	public :
 		void add();
 		void search();
 		int exit();
 };
+
+bool	isNumber(const std::string &s);
 
 # endif

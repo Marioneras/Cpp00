@@ -11,9 +11,9 @@
 # **************************************************************************** #
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror
 NAME = TheAmazingPhoneBook
-SOURCES = PhoneBook.cpp
+SOURCES = PhoneBook.cpp helperFunction.cpp
 
 $(NAME): $(SOURCES)
 	$(CC) $(CFLAGS) -o $(NAME) $(SOURCES)
