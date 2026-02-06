@@ -6,7 +6,7 @@
 /*   By: mberthou <mberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 20:00:03 by mberthou          #+#    #+#             */
-/*   Updated: 2025/11/21 20:26:37 by mberthou         ###   ########.fr       */
+/*   Updated: 2026/02/05 17:58:41 by mberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ class Contact {
 		void	printFixedWidthField(const std::string &text,
 				std::size_t width = 10);
 		void	displayContact(int i);
-		void	displayContactInfos(Contact &listOfContact);
+		void	displayContactInfos();
 };
 
 class PhoneBook {
 	private :
 		Contact listOfContact[8];
 		int	isFieldEmpty();
-		int	findEmptyField();
+		int	addCount;
 	public :
+		PhoneBook();
 		void add();
 		void search();
 		int exit();

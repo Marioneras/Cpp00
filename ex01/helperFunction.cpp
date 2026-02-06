@@ -6,7 +6,7 @@
 /*   By: mberthou <mberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 18:24:05 by mberthou          #+#    #+#             */
-/*   Updated: 2025/12/03 18:24:05 by mberthou         ###   ########.fr       */
+/*   Updated: 2026/02/05 19:24:29 by mberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "PhoneBook.hpp"
 
-bool isNumber(const std::string& str) {
+bool isNumber(const std::string &str) {
 	if (str.empty())
         return false;
 
@@ -25,17 +25,6 @@ bool isNumber(const std::string& str) {
             return false;
     }
     return true;
-}
-
-int	PhoneBook::findEmptyField()
-{
-	static int i = -1;
-
-	if (i < 7)
-		i++;
-	else
-		i = -1;
-	return (i);
 }
 
 void	Contact::setField(Field index, bool (*validateField)(const std::string&),
@@ -85,6 +74,7 @@ void	Contact::displayContact(int i) {
 
 	std::string	index;
 	std::stringstream str;
+	i++;
 	str << i;
 	str >> index;
 
@@ -92,7 +82,7 @@ void	Contact::displayContact(int i) {
 		contactField[i] = getField(i);
 
 	std::cout << '|';
-	printFixedWidthField(index + 1);
+	printFixedWidthField(index);
 	std::cout << '|';
 	for (int i = 0; i < 3; i++) {
 		printFixedWidthField(contactField[i]);
@@ -101,6 +91,19 @@ void	Contact::displayContact(int i) {
 	std::cout << std::endl;
 }
 
-// void	Contact::displayContactInfos(contact &listOfContact) {
-//
-// }
+void	Contact::displayContactInfos() {
+	std::string	contactField[5];
+	std::string	prompts[] = {
+		"First name : ",
+		"Last name : ",
+		"Nickname : ",
+		"Phone number : ",
+		"Darkest secret : "
+	};
+
+	for (int i = 0; i < 5; i++)
+		contactField[i] = getField(i);
+
+	for (int i = 0; i < 5; i++)
+		std::cout << prompts[i] << contactField[i] << std::endl;
+}
