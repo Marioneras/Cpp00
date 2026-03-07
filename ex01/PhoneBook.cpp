@@ -6,7 +6,7 @@
 /*   By: mberthou <mberthou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:45:49 by mberthou          #+#    #+#             */
-/*   Updated: 2026/02/05 19:24:31 by mberthou         ###   ########.fr       */
+/*   Updated: 2026/02/06 19:03:41 by mberthou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	PhoneBook::add() {
 
 	for (int i = 0; i < 5; i++)
 		contact.setField((Contact::Field)i, (i == 3) ? &isNumber : 0, prompts[i], errorMessage[i]);
-	contact.isSet = true;
 }
 
 void	PhoneBook::search() {
@@ -46,27 +45,33 @@ void	PhoneBook::search() {
 	std::cout << "}----------+----------+----------+----------{" << std::endl;
 
 	int i = 0;
-	for (;listOfContact[i].isSet; i++) {
+	for (;i < ((addCount < 8) ? addCount : 8); i++) {
 		listOfContact[i].displayContact(i);
 	}
 
 	std::cout << "\\----------'----------'----------'----------/" << std::endl;
 
-	std::cout << "Pray, select the contact whose particulars you desire to view:" << std::endl;
-	std::getline(std::cin, userInput);
-	if (std::cin.eof() == 1) {
-		std::cin.clear();
+	while (42) {
+		std::cout << "Pray, select the contact whose particulars you desire to view:" << std::endl;
+		std::cout << ">";
+		std::getline(std::cin, userInput);
+		if (std::cin.eof() == 1) {
+			std::cin.clear();
+		}
+		if (userInput.compare("exit") == 0)
+			break;
+		int res = std::stoi(userInput) - 1;
+		if (res > i || res < 0) {
+			std::cout << res << std::endl;
+			std::cout << "The digits ye provided be either beyond the pale or plumb incorrect." << std::endl;
+			return ;
+		}
+		listOfContact[res].displayContactInfos();
 	}
-	int res = std::stoi(userInput);
-	if (res > i || res < 0) {
-		std::cout << "The digits ye provided be either beyond the pale or plumb incorrect." << std::endl;
-		return ;
-	}
-	listOfContact[res].displayContactInfos();
 }
 
 int	PhoneBook::exit() {
-	std::cout << "exit!" << std::endl;
+	std::cout << "Farewell, stranger!" << std::endl;
 	return (0);
 }
 

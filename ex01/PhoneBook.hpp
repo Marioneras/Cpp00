@@ -28,7 +28,6 @@ class Contact {
 			phoneNumber,
 			darkestSecret
 		};
-		bool	isSet;
 		void	setField(Field index, bool (*validateField)(const std::string&),
 				const std::string &prompt, const std::string &errorMessage);
 		const	std::string	&getField(int index);
