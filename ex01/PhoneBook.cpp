@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "PhoneBook.hpp"
+#include "colours.hpp"
 
 void	PhoneBook::add() {
 	int		indexEmptyContact = addCount++ % 8;
@@ -58,12 +59,22 @@ void	PhoneBook::search() {
 		if (std::cin.eof() == 1) {
 			std::cin.clear();
 		}
+		while (!isNumber(userInput) || userInput.compare("exit") == 0) {
+			std::cout << RED << "The digits ye provided be either beyond the pale or plumb incorrect.";
+			std::cout << RESET << std::endl;
+			std::cout << ">";
+			std::getline(std::cin, userInput);
+			if (std::cin.eof() == 1) {
+				std::cin.clear();
+			}
+		}
 		if (userInput.compare("exit") == 0)
 			break;
 		int res = std::stoi(userInput) - 1;
 		if (res > i || res < 0) {
-			std::cout << res << std::endl;
-			std::cout << "The digits ye provided be either beyond the pale or plumb incorrect." << std::endl;
+			std::cout << RED << res << std::endl;
+			std::cout << "The digits ye provided be either beyond the pale or plumb incorrect.";
+			std::cout << RESET << std::endl;
 			return ;
 		}
 		listOfContact[res].displayContactInfos();

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 NAME = TheAmazingPhoneBook
 SOURCES = PhoneBook.cpp helperFunction.cpp main.cpp
 
