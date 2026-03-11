@@ -12,8 +12,10 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 
 #include "PhoneBook.hpp"
+#include "colours.hpp"
 
 bool isNumber(const std::string &str) {
 	if (str.empty())
@@ -33,24 +35,22 @@ void	Contact::setField(Field index, bool (*validateField)(const std::string&),
 	std::string	userInput;
 	getline(std::cin, userInput);
 	if (std::cin.eof() == 1) {
-		std::cin.clear();
-		std::cin.ignore();
-		/* continue; */
+		std::cout << RED << "Ctrl+D entered" << RESET << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
-	if (userInput.size() == 0) {
-		std::cout << errorMessage << std::endl;
-		return ;
+	while (userInput.size() == 0) {
+		std::cout << RED << errorMessage << RESET << std::endl;
+		std::cout << "> ";
+		getline(std::cin, userInput);
 	}
 	if (validateField) {
-		if (validateField(userInput))
-			field[index] = userInput;
-		else {
-			std::cout << errorMessage << std::endl;
-			return ;
+		while (!validateField(userInput)) {
+			std::cout << RED << errorMessage << RESET << std::endl;
+			std::cout << "> ";
+			getline(std::cin, userInput);
 		}
 	}
-	else
-		field[index] = userInput;
+	field[index] = userInput;
 }
 
 const std::string	&Contact::getField(int index) {
@@ -65,7 +65,7 @@ void	Contact::printFixedWidthField(const std::string &text, std::size_t width) {
 	std::string	sub = text.substr(0, width - isBigger);
 	std::cout.fill(' ');
 	std::cout.width(width - isBigger);
-	std::cout << std::left << sub;
+	std::cout << std::right << sub;
 	std::cout << (char)(isBigger * '.');
 }
 

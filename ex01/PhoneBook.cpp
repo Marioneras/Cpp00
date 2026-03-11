@@ -41,6 +41,11 @@ void	PhoneBook::add() {
 void	PhoneBook::search() {
 	std::string	userInput;
 
+	if (addCount == 0) {
+		std::cout << "Thy Phonebook seems to be empty... why not try to add a new contact?" << std::endl;
+		return ;
+	}
+
 	std::cout << "/----------.----------.----------.----------\\" << std::endl;
 	std::cout << "|  Index   |First name|Last  name| Nickname |" << std::endl;
 	std::cout << "}----------+----------+----------+----------{" << std::endl;
@@ -59,25 +64,26 @@ void	PhoneBook::search() {
 		if (std::cin.eof() == 1) {
 			std::cin.clear();
 		}
-		while (!isNumber(userInput) || userInput.compare("exit") == 0) {
+		while (!isNumber(userInput) || !userInput.compare("exit") == 0) {
 			std::cout << RED << "The digits ye provided be either beyond the pale or plumb incorrect.";
 			std::cout << RESET << std::endl;
 			std::cout << ">";
 			std::getline(std::cin, userInput);
 			if (std::cin.eof() == 1) {
-				std::cin.clear();
+				break;
 			}
 		}
 		if (userInput.compare("exit") == 0)
 			break;
-		int res = std::stoi(userInput) - 1;
-		if (res > i || res < 0) {
-			std::cout << RED << res << std::endl;
+		int index = std::stoi(userInput);
+		index -= 1;
+		if (index > i || index < 0) {
+			std::cout << RED << index << std::endl;
 			std::cout << "The digits ye provided be either beyond the pale or plumb incorrect.";
 			std::cout << RESET << std::endl;
 			return ;
 		}
-		listOfContact[res].displayContactInfos();
+		listOfContact[index].displayContactInfos();
 	}
 }
 

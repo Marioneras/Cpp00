@@ -39,8 +39,7 @@ class Contact {
 
 class PhoneBook {
 	private :
-		Contact listOfContact[8];
-		int	isFieldEmpty();
+	Contact listOfContact[8];
 		int	addCount;
 	public :
 		PhoneBook();
