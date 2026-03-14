@@ -39,15 +39,21 @@ class Contact {
 
 class PhoneBook {
 	private :
-	Contact listOfContact[8];
-		int	addCount;
+		Contact listOfContact[8];
+		int		addCount;
+
+		int				displayTable();
+		std::string		askIndex();
+		void			displayMenuPrompt();
+
 	public :
 		PhoneBook();
-		void add();
-		void search();
-		int exit();
+		void	add();
+		void	search();
+		int		exit();
 };
 
 bool	isNumber(const std::string &s);
+bool	stringToInt(const std::string &str, int &result);
 
 # endif

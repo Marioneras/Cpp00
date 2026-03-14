@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <iostream>
+#include <cstdlib>
 
 #include "PhoneBook.hpp"
 #include "colours.hpp"
@@ -36,59 +37,58 @@ void	PhoneBook::add() {
 
 	for (int i = 0; i < 5; i++)
 		contact.setField((Contact::Field)i, (i == 3) ? &isNumber : 0, prompts[i], errorMessage[i]);
+	PhoneBook::displayMenuPrompt();
 }
 
 void	PhoneBook::search() {
 	std::string	userInput;
 
 	if (addCount == 0) {
-		std::cout << "Thy Phonebook seems to be empty... why not try to add a new contact?" << std::endl;
+		std::cout	<< BLUE
+					<< "Alas, this Directory appears to be quite empty."
+					<< std::endl
+					<< "Why not enter ADD to record the first contact?"
+					<< RESET << std::endl;
 		return ;
 	}
 
-	std::cout << "/----------.----------.----------.----------\\" << std::endl;
-	std::cout << "|  Index   |First name|Last  name| Nickname |" << std::endl;
-	std::cout << "}----------+----------+----------+----------{" << std::endl;
-
-	int i = 0;
-	for (;i < ((addCount < 8) ? addCount : 8); i++) {
-		listOfContact[i].displayContact(i);
-	}
-
-	std::cout << "\\----------'----------'----------'----------/" << std::endl;
+	int lastContactIndex = PhoneBook::displayTable();
 
 	while (42) {
-		std::cout << "Pray, select the contact whose particulars you desire to view:" << std::endl;
-		std::cout << ">";
-		std::getline(std::cin, userInput);
-		if (std::cin.eof() == 1) {
-			std::cin.clear();
-		}
-		while (!isNumber(userInput) || !userInput.compare("exit") == 0) {
-			std::cout << RED << "The digits ye provided be either beyond the pale or plumb incorrect.";
-			std::cout << RESET << std::endl;
-			std::cout << ">";
-			std::getline(std::cin, userInput);
-			if (std::cin.eof() == 1) {
-				break;
-			}
-		}
-		if (userInput.compare("exit") == 0)
+		userInput = PhoneBook::askIndex();
+
+		if (userInput == "EXIT") {
+			PhoneBook::displayMenuPrompt();
 			break;
-		int index = std::stoi(userInput);
+		}
+
+		if (!isNumber(userInput)) {
+			std::cerr	<< RED << "The digits ye provided be either beyond the"
+						<< " pale or plumb incorrect." << RESET << std::endl;
+			std::cout << std::endl;
+			continue;
+		}
+
+		int index;
+		if (!stringToInt(userInput, index)) {
+			std::cerr << RED << "Invalid index" << RESET << std::endl;
+			PhoneBook::displayMenuPrompt();
+			return;
+		}
 		index -= 1;
-		if (index > i || index < 0) {
-			std::cout << RED << index << std::endl;
-			std::cout << "The digits ye provided be either beyond the pale or plumb incorrect.";
-			std::cout << RESET << std::endl;
-			return ;
+		if (index > lastContactIndex || index < 0) {
+			std::cerr	<< RED << "The digits ye provided be either beyond the"
+						<< " pale or plumb incorrect." << RESET << std::endl;
+			std::cout << std::endl;
+			continue;
 		}
 		listOfContact[index].displayContactInfos();
 	}
 }
 
 int	PhoneBook::exit() {
-	std::cout << "Farewell, stranger!" << std::endl;
+	std::cout	<< std::endl << BLUE << "Farewell, stranger!" << RESET
+				<< std::endl;
 	return (0);
 }
 
