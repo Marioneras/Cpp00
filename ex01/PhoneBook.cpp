@@ -76,7 +76,7 @@ void	PhoneBook::search() {
 			return;
 		}
 		index -= 1;
-		if (index > lastContactIndex || index < 0) {
+		if (index >= lastContactIndex || index < 0) {
 			std::cerr	<< RED << "The digits ye provided be either beyond the"
 						<< " pale or plumb incorrect." << RESET << std::endl;
 			std::cout << std::endl;
