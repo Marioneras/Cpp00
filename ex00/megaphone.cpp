@@ -11,21 +11,20 @@
 /* ************************************************************************** */
 
 #include <bits/stdc++.h>
-using namespace std;
 
 int main(int argc, char** argv) {
 
 	if (argc == 1)
-		cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << endl;
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	else {
 		for (int i = 1; i < argc; i++) {
-			string s = argv[i];
+			std::string s = argv[i];
 
 			transform(s.begin(), s.end(), s.begin(), ::toupper);
 			if (i < argc - 1)
-				cout << s << " ";
+				std::cout << s << " ";
 			else
-				cout << s << endl;
+				std::cout << s << std::endl;
 		}
 	}
     return 0;

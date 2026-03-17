@@ -12,7 +12,7 @@
 
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
-NAME = megaphone 
+NAME = megaphone
 SOURCES = megaphone.cpp
 
 $(NAME): $(SOURCES)
